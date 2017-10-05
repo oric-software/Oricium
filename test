@@ -1,0 +1,41 @@
+        1 fichier(s) copi‚(s).
+loader.tap
+screen.tap
+        1 fichier(s) copi‚(s).
+CRC check activated
+Cannot open BUILD\Oricium.tap file
+Usage: tap2cd [-c|-h] <.TAP file> <WAV file>
+(-c check CRC, -h load HIRES screen first)
+Building at adress=$1000
+Building the program ORICIUM at adress $1000
+Assembling mainloop.S
+Assembling tilemap.S
+Assembling data.S
+Assembling generator.S
+Assembling keyboard.S
+Assembling common.S
+Assembling hero.S
+Assembling scripts.S
+Assembling stars.S
+Assembling engine.S
+Assembling radar.S
+Assembling sprites.S
+Assembling enemies.S
+Assembling items.S
+Assembling sndeng.S
+Assembling sfx.S
+Assembling auxiliar.S
+Assembling level.S
+Terminer le programme de commandes (O/N)ÿ? 
+Assembling panel.S
+Assembling strings.S
+Assembling songs.S
+Assembling tileset.S
+Linking
+C:\Users\plifp\OneDrive\oric\projets\oric_software\Oricium
+Assembling
+ERROR : Build failed.
+Appuyez sur une touche pour continuer... 
+        1 fichier(s) copi‚(s).
+Le fichier sp‚cifi‚ est introuvable.
+        1 fichier(s) copi‚(s).
