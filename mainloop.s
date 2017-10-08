@@ -10,27 +10,12 @@
 
 ;; Code with main entry point and game loop
 
+#define TARGET_ORIX
+
 #include "params.h"
 #include "sfx.h"
 
-#define TARGET_ORIX
-
-#ifdef TARGET_ORIX
-#define BRK_TELEMON(value)\
-	.byt 00,value;
-
-
-
-#include "../oric-common/include/asm/telemon.h"
-#include "../oric-common/include/asm/keyboard.h"
-;#include "../oric-common/include/asm/macro_orix.h"
-
-
-#endif
-
-
 .zero
-
 tmp0	.dsb 2
 tmp1	.dsb 2
 tmp2	.dsb 2
@@ -58,13 +43,15 @@ _spare				.dsb ($c000-*)
 #define bheigth tmp2+1
 #define _star_tile  $bab0
 
-
-
-
 ; Game's entry point
 _main
 .(
 #ifdef TARGET_ORIX
+#include "../telemon/src/include/telemon.h"
+#include "../oric-common/include/asm/keyboard.h"
+
+#define BRK_TELEMON(value)\
+	.byt 00,value;
 
 #define PTR_READ_DEST $2c
 #define TR0 $11
@@ -75,9 +62,53 @@ _main
   sta $30e
   lda #0+32+64
   sta $32e
-	
-  BRK_TELEMON(XHIRES)
 
+
+  ldx #0
+loopme2 
+  lda $b400,x
+  sta $9800,x
+  /*
+  lda $b500,x
+  sta $9900,x
+  lda $b600,x
+  sta $9a00,x  
+  lda $b700,x
+  sta $9b00,x    
+  lda $b800,x
+  sta $9c00,x      
+  lda $b900,x
+  sta $9d00,x        
+  */
+  inx
+  bne loopme2
+
+ ;  BRK_TELEMON(XHIRES)
+  
+/*
+  ldy #$06
+lk2  
+  ldx #0
+loopme3
+  lda $9800,x
+  sta $b400,x
+  inx
+  bne loopme3
+  dey 
+  bne lk2
+  */
+/*  
+
+  ldx #0
+  lda #$20
+loopme  
+  sta $bb80+23*40,x
+  inx
+  bne loopme  
+  */
+  
+  
+/*
   lda #<title_file ; load ptr of the string (path) 
   ldx #>title_file  
   BRK_TELEMON(XOPEN)       ; open it return file id
@@ -92,7 +123,11 @@ _main
   ldy #>8000-1               ; read 6040 bytes
   BRK_TELEMON(XFREAD)      ; launch the read, XFREAD will insert data in PTR_READ_DEST, and TR0 is set
   BRK_TELEMON(XCLOSE)      ; launch the read, XFREAD will insert data in PTR_READ_DEST, and TR0 is set
-   
+  jmp  nextme
+title_file
+.asc "/usr/share/oricium/screen.hrs",0    
+nextme
+*/
 #endif
 
 	; Initialize some variables
@@ -104,47 +139,24 @@ _main
 	sta audio_on
 
 	; Copy charset to alt hires charset
-	jsr charset_to_althires	 ; Does not work on telestrat
-
-
-
+	jsr charset_to_althires	
+	
 	lda #A_ALT
 	sta $bf90
-
-  
-  
-#ifdef TARGET_ORIX
-; FIXME
-	ldx #$00 ; Switch off cursor
-	BRK_TELEMON(XCOSCR)
-#else
+	
 	lda #%11111110
 	and $26a
 	sta $26a
-#endif	
-  
+	
 	; Ask the user to press key
 	ldy #26
 	lda #3
 	jsr print_string_centered
-
-
-#ifdef TARGET_ORIX
-wait_key
-	BRK_TELEMON(XRD0) ; Read keyboard
-	cmp #KEY_ESC ; EST ?
-	bne wait_space
-	jmp return_to_OS
-wait_space
-	cmp #" "  ; space ?
-	bne wait_key
-#else
 .(
 loop	
 	lda $02df   
 	beq loop
 .)
-#endif
 
 	
 	; Clear HIRES memory
@@ -238,11 +250,17 @@ loop
 
 	
 	; Get the syncro with the vertical retrace
+#ifdef TARGET_ORIX  
+	lda #<19966
+	sta $306
+	lda #>19966
+	sta $307
 
-
-	jsr perform_vsync ;FIXME
-
-;#endif	
+  	lda #0
+  	sta using_vsync_hack
+#else  
+	jsr perform_vsync
+#endif	
 	; Start the sound engine
 	jsr _StartPlayer
 	jsr _SetSFX
@@ -1252,23 +1270,3 @@ skipprintbm
 
 switch_eor_codes .dsb 4
 switch_and_codes .dsb 4
-
-#ifdef TARGET_ORIX
-
-title_file
-.asc "/usr/share/oricium/screen.hrs",0 
-altchar_file
-.asc "/usr/share/oricium/altchar.bin",0 
-#endif
-
-#ifdef TARGET_ORIX
-return_to_OS
-	;
-	; clear and switch to text
-	.byt $00,$1a ; BRK  Hires
-	.byt $00,$19 ; BRK text
-	rts
-#endif
-
-EndOfMemory
-

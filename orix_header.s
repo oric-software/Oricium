@@ -1,6 +1,6 @@
 header_orix
 .text
-*=$600-20
+*=$800-20
 
 	.byt $01,$00		; non-C64 marker
 ;2
@@ -20,5 +20,5 @@ header_orix
 	.byt <start_adress,>start_adress ; starting adress
 
 start_adress
-*=$600
+*=$800
 EndOfMemory

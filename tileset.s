@@ -11,7 +11,7 @@
 
 
 ; Tile graphics
-.bss
+
 temp_tilesA
 .dsb $8400-*
 ; Tile data(even rows)

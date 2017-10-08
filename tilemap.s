@@ -19,12 +19,11 @@ free_before_map
 */
 
 .bss
-*=$9800-20*256 ; equal to $8400
+*=$9800-20*256
 
 _start_rows
 
 __Row0
-
 .dsb 256,$20
 __Row1
 .dsb 256,$20

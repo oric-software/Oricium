@@ -331,12 +331,6 @@ print_string_centered
 .(
 	sty savY+1
 	jsr search_string
-/*
-  lda #<toto
-  sta tmp
-  lda #>toto
-  sta tmp+1
-*/
 	; Get the string length
 	ldy #0
 loop	
@@ -633,12 +627,8 @@ perform_vsync
 	sta $307
 
 	; Remove cursor and other things...
-#ifdef TARGET_ORIX
-; FIXME
-#else	
 	lda #0
 	sta $26a
-#endif	
 
 	
 	;lda #A_TEXT50
@@ -646,17 +636,9 @@ perform_vsync
 	
 	; Detect if vsync hack is present
 	jsr clrscr
-
 	ldy #20
 	lda #72
 	jsr print_string_centered
-
-#ifdef TARGET_ORIX
-	lda #0
-	
-	sta using_vsync_hack
-  JMP end
-#endif  
 	
 	lda #0
 	sta $2df
@@ -667,27 +649,9 @@ loop
 	; vsync hack detected!
 	inc using_vsync_hack
 	jmp end
-vsync_hack_absent
-
-#ifdef TARGET_ORIX
-wait_key
-	BRK_TELEMON($08)
-	;CALL_READKEYBOARD
-	cmp #27 ; EST ?
-	bne wait_space
-	jmp return_to_OS
-wait_space
-	cmp #" "  ; space ?
-	bne wait_key
-
-#else
-.(
-
-	lda $02df   
-	beq loop
-.)
-#endif	
-
+vsync_hack_absent	
+	lda $2df
+	beq loop	
 	
 	; Set up instructions
 	jsr clrscr
@@ -747,28 +711,7 @@ _DoSync
 	lda #0
 	sta tmpval
 l6
-
-#ifdef TARGET_ORIX
-wait_key
-	BRK_TELEMON($08)
-	;CALL_READKEYBOARD
-	cmp #27 ; EST ?
-	bne wait_space
-	jmp return_to_OS
-wait_space
-	cmp #" "  ; space ?
-	bne wait_key
-  lda #$d1
-  jmp l4
-#else
-.(
-	lsr $02df 
-
-.)
-#endif
-
-
-  
+	lsr $02df   
 	lda #$40    
 l2
 	bit $030d   

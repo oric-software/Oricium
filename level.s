@@ -1455,10 +1455,7 @@ end
 ;   pstring: pointer to buffer
 ;   ps_length: length to read
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 .zero
-
 pstring 	.word $0000
 ps_length 	.byt $00
 	

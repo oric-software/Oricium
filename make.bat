@@ -18,9 +18,11 @@ call osdk_build.bat
 
 md ..\..\..\oricutron\usbdrive\usr\share\oricium\
 
+md RELEASE\orix\usr\bin\
+
 IF "%1"=="NORUN" GOTO End
 md ..\..\..\oricutron\usbdrive\usr\share\oricium\
-copy RELEASE\orix\usr\share\oricium\screen.hrs ..\..\..\oricutron\usbdrive\usr\share\oricium\
+rem copy RELEASE\orix\usr\share\oricium\screen.hrs ..\..\..\oricutron\usbdrive\usr\share\oricium\
 
 %OSDK%\bin\xa.exe orix_header.s -o build\orix_header.o
 
@@ -28,7 +30,7 @@ copy build\orix_header.o /b + build\final.out RELEASE\orix\usr\bin\oricium
 
 
 
-copy data\altchar.bin ..\..\..\oricutron\usbdrive\usr\share\oricium\
+rem copy data\altchar.bin ..\..\..\oricutron\usbdrive\usr\share\oricium\
 
 copy RELEASE\orix\usr\bin\oricium %ORICUTRON%\usbdrive\bin\oricium
 rem copy Release\orix\usr\share\im\title.hrs ..\..\..\oricutron\usbdrive\usr\share\im\

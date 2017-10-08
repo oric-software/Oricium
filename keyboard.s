@@ -62,38 +62,29 @@ _InitISR
 	lda #%1000000
 	sta via_acr
 
-	lda #128+64
-	sta $30e
-	
-
 	; Since this is an slow process, we set the VIA timer to 
 	; issue interrupts at 25Hz, instead of 100 Hz. This is 
 	; not necessary -- it depends on your needs
-	lda #<20000
-	sta via_t1ll 
-	lda #>20000
-	sta via_t1lh
+	;lda #<40000
+	;sta via_t1ll 
+	;lda #>40000
+	;sta via_t1lh
 
 	; Patch IRQ vector
-  lda #<irq_routine 
-  ldx #>irq_routine 
+    lda #<irq_routine 
+    ldx #>irq_routine 
 #ifdef TARGET_ORIX    
 	sta $02fb
   stx $02fc
 #else    
-	
 	ldy $fffe
 	cpy #$44
 	bne oric1
 	; It is an atmos
-  sta $0245
-  stx $0246
+    sta $0245
+    stx $0246
 	jmp end
 oric1
-
-	jmp end
-	
-oric1_init
 	; It is an Oric-1
     sta $0229
     stx $022a
@@ -120,39 +111,37 @@ test_via1
 	lda #$7F
 	sta $030D    ; cancel any VIA interrupt
 test_via2
-#endif  
-
+#endif    
+  
 #ifdef SANITYVERSION	
 test_via1
 	bit $030D
 	bpl test_via2
-  
 	lda #$7F
 	sta $030D    ; cancel any VIA interrupt
 test_via2
-
 	bit $032D        ; on the Oric1/Atmos, this will test via1 again
 	bpl test_acia
 	lda #$7F
 	sta $032D    ; cancel any VIA2 interrupt (VIA1 on the Atmos)
 test_acia
-
     bit $031D    ; on the Oric1/Atmos, this will test via1 again !
     bpl test_fdc
     ; reading the ACIA status has already cleared the interrupt, so no need to do anything
     ; if it is a VIA interrupt on the Atmos, it has happened between the first via test and now,
     ; so we ignore it: it will raise another interrupt that will be cleared during the second interrupt handler test_fdc
-  
+
 	bit $0314           ; $0314 reflects INTRQ state in negative logic
     bmi all_tests_done
- 
 test_fdc
 .dsb (($0310&3)-((*+3)&3))&3,$ea
     lda $0310    ; read FDC status and clears interrupt request
 _chk_310g
 all_tests_done
-#endif	
+#else
+    ;Clear IRQ event 
     lda via_t1cl 
+#endif	
 
 	; Signal an interrupt has been detected
 	; This serves the purpose of timing and 
@@ -184,9 +173,9 @@ skip
 ReadKeyboard
 .(
 		sei
-   ;Write Column Register Number to PortA 
-    lda #$0E 
-    sta via_porta 
+        ;Write Column Register Number to PortA 
+        lda #$0E 
+        sta via_porta 
 
         ;Tell AY this is Register Number 
         lda #$FF 
