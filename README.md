@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/oric-software/oricium.svg?branch=master)](https://travis-ci.org/oric-software/oricium)
+
 README.md
 
 do make.bat (need osdk last version)
