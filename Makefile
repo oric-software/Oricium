@@ -15,7 +15,7 @@ CFLAGS=-ttelestrat
 SOURCE=main.c
 ASFLAGS=-v -R -cc -DTARGET_FILEFORMAT_O65
 
-$(PROGRAM): $(SOURCE)
+$(PROGRAM): README.md
 	echo nothing
 
 
