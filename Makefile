@@ -2,16 +2,16 @@ AS=xa
 CO=co65
 CC=cl65
 
+PROGRAM=oricium
+
 HOMEDIR=/home/travis/bin/
 HOMEDIR_PROGRAM=/home/travis/build/oric-software/$(PROGRAM)
 
-
-all : nyatmos
+all : oricium
 .PHONY : all
 
 CFLAGS=-ttelestrat
 
-PROGRAM=oricium
 SOURCE=main.c
 ASFLAGS=-v -R -cc -DTARGET_FILEFORMAT_O65
 
