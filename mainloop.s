@@ -47,8 +47,8 @@ _spare				.dsb ($c000-*)
 _main
 .(
 #ifdef TARGET_ORIX
-#include "../telemon/src/include/telemon.h"
-#include "../oric-common/include/asm/keyboard.h"
+#include "../orix/src/include/orix.h"
+#include "../orix/src/include/keyboard.h"
 
 #define BRK_TELEMON(value)\
 	.byt 00,value;

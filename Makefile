@@ -15,6 +15,9 @@ CFLAGS=-ttelestrat
 SOURCE=main.c
 ASFLAGS=-v -R -cc -DTARGET_FILEFORMAT_O65
 
+$(PROGRAM): $(SOURCE)
+	echo nothing
+
 
 test:
 	mkdir -p build/usr/bin/
