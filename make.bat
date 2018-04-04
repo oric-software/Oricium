@@ -28,11 +28,14 @@ rem copy RELEASE\orix\usr\share\oricium\screen.hrs ..\..\..\oricutron\usbdrive\u
 
 copy build\orix_header.o /b + build\final.out RELEASE\orix\usr\bin\oricium
 
-
+echo | set /p dummyName=oricium   1.0.0  Start Oricium game > src\ipkg\oricium.csv
 
 rem copy data\altchar.bin ..\..\..\oricutron\usbdrive\usr\share\oricium\
 
 copy RELEASE\orix\usr\bin\oricium %ORICUTRON%\usbdrive\bin\oricium
+copy RELEASE\orix\usr\bin\oricium %ORICUTRON%\usbdrive\usr\bin\oricium
+copy src\man\oricium.hlp %ORICUTRON%\usbdrive\usr\share\man
+copy src\ipkg\oricium.csv %ORICUTRON%\usbdrive\usr\share\ipkg
 rem copy Release\orix\usr\share\im\title.hrs ..\..\..\oricutron\usbdrive\usr\share\im\
 
 cd %ORICUTRON%
