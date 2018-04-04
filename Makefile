@@ -16,7 +16,7 @@ SOURCE=main.c
 ASFLAGS=-v -R -cc -DTARGET_FILEFORMAT_O65
 
 $(PROGRAM): README.md
-	touch nothing
+	cp README.md toto
 
 
 test:
